@@ -18,11 +18,9 @@ exports.generateToken = async (accountData) => {
   const tokenData = `${randomTokenId}:${expires}:${signature}`;
   const token = Buffer.from(tokenData).toString('base64');
 
-  await client.connect();
   await client.hSet(randomTokenId, 'expires', expires);
   await client.hSet(randomTokenId, 'secretKey', randomSecretKey);
   await client.hSet(randomTokenId, 'accountId', accountData.id);
-  await client.disconnect();
 
   return token;
 };

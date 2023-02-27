@@ -2,6 +2,9 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 
+const { client } = require('./helpers/createRedis');
+client.connect();
+
 const authRouter = require('./routes/auth.routes');
 
 const app = express();

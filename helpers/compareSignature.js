@@ -4,9 +4,7 @@ const { client } = require('../helpers/createRedis');
 const crypto = require('crypto');
 
 exports.compareSignature = async (tokenId, signatureClient) => {
-  await client.connect();
   const value = await client.hGetAll(tokenId);
-  await client.disconnect();
 
   if (JSON.stringify(value) === JSON.stringify({})) {
     throwError(404, 'ไม่มี Token ใน Redis');
