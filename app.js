@@ -1,12 +1,19 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 
 const authRouter = require('./routes/auth.routes');
 
 const app = express();
 app.use(bodyParser.json());
 
-app.use('/auth', authRouter);
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 1000,
+  message: 'Too many requests',
+});
+
+app.use('/auth', limiter, authRouter);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
