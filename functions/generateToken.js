@@ -1,4 +1,4 @@
-const { client } = require('../helpers/createRedis');
+const { client } = require('../functions/createRedis');
 const { v4: uuidv4 } = require('uuid');
 const randomKey = require('random-key');
 const date = require('date-and-time');

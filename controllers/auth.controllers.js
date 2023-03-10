@@ -1,8 +1,8 @@
 const { validationResult } = require('express-validator');
-const { throwError } = require('../helpers/throwError');
-const { generateToken } = require('../helpers/generateToken');
-const { verifyExpires } = require('../helpers/verifyExpires');
-const { compareSignature } = require('../helpers/compareSignature');
+const { throwError } = require('../functions/throwError');
+const { generateToken } = require('../functions/generateToken');
+const { verifyExpires } = require('../functions/verifyExpires');
+const { compareSignature } = require('../functions/compareSignature');
 const db = require('../models/index');
 const bcrypt = require('bcryptjs');
 

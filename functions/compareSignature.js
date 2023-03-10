@@ -1,6 +1,6 @@
 const db = require('../models/index');
 const { verifyExpires } = require('./verifyExpires');
-const { client } = require('../helpers/createRedis');
+const { client } = require('../functions/createRedis');
 const crypto = require('crypto');
 
 exports.compareSignature = async (tokenId, signatureClient) => {
