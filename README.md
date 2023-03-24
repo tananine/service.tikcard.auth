@@ -1,1 +1,1 @@
-# auth-service
+# service.vickq.auth
