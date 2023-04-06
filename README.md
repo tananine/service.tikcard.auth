@@ -1,1 +1,1 @@
-# service.vickq.auth
+# service.tikcard.auth
