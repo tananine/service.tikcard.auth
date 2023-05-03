@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const register = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throwError(400, errors.array()[0].msg, errors.array(), true);
   }
 
   const email = req.body.email;
@@ -43,7 +43,7 @@ const register = async (req, res, next) => {
 const login = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throwError(400, errors.array()[0].msg, errors.array(), true);
   }
 
   const email = req.body.email;
@@ -56,14 +56,14 @@ const login = (req, res, next) => {
   })
     .then((account) => {
       if (!account) {
-        throwError(400, 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+        throwError(400, 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', {}, true);
       }
       accountData = account;
       return bcrypt.compare(password, accountData.password);
     })
     .then(async (isEqual) => {
       if (!isEqual) {
-        throwError(400, 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+        throwError(400, 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', {}, true);
       }
       const token = await generateToken(accountData);
       res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', token: token });
@@ -76,7 +76,7 @@ const login = (req, res, next) => {
 const authentication = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throwError(400, errors.array()[0].msg, errors.array(), true);
   }
 
   const bearerToken = req.headers.authorization;
