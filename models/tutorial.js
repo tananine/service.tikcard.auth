@@ -12,10 +12,22 @@ module.exports = (sequelize, DataTypes) => {
   Tutorial.init(
     {
       accountId: DataTypes.INTEGER,
-      profilePage: DataTypes.BOOLEAN,
-      sharePage: DataTypes.BOOLEAN,
-      connectionPage: DataTypes.BOOLEAN,
-      profileScan: DataTypes.BOOLEAN,
+      profilePage: {
+        type: DataTypes.INTEGER,
+        defaultValue: false,
+      },
+      sharePage: {
+        type: DataTypes.INTEGER,
+        defaultValue: false,
+      },
+      connectionPage: {
+        type: DataTypes.INTEGER,
+        defaultValue: false,
+      },
+      profileScan: {
+        type: DataTypes.INTEGER,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
