@@ -1,8 +1,7 @@
 const { validationResult } = require('express-validator');
 const { throwError } = require('../functions/throwError');
 const { generateToken } = require('../functions/generateToken');
-const { verifyExpires } = require('../functions/verifyExpires');
-const { compareSignature } = require('../functions/compareSignature');
+const { auth } = require('../functions/auth');
 const db = require('../models/index');
 const bcrypt = require('bcryptjs');
 
@@ -73,36 +72,18 @@ const login = (req, res, next) => {
     });
 };
 
-const authentication = (req, res, next) => {
+const authentication = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throwError(400, errors.array()[0].msg, errors.array(), true);
   }
 
-  const bearerToken = req.headers.authorization;
-  const token = bearerToken.split(' ')[1];
-  const buff = Buffer.from(token, 'base64');
-  const decodeToken = buff.toString('ascii').split(':');
-  const tokenId = decodeToken[0];
-  let expires = decodeToken[1];
-  const signature = decodeToken[2];
-
-  if (!(tokenId && expires && signature)) {
-    throwError(401, 'รูปแบบ Token ไม่ถูกต้อง');
+  try {
+    const account = await auth(req.headers.authorization);
+    res.status(200).json(account);
+  } catch (error) {
+    next(error);
   }
-  if (!verifyExpires(expires)) {
-    throwError(401, 'Token Client หมดอายุ');
-  }
-  compareSignature(tokenId, signature)
-    .then((account) => {
-      if (!account) {
-        throwError(401, 'Token ไม่ถูกต้อง');
-      }
-      res.status(200).json(account);
-    })
-    .catch((error) => {
-      next(error);
-    });
 };
 
 module.exports = {
