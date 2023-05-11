@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      profileId: {
+      accountId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
