@@ -75,7 +75,7 @@ const login = (req, res, next) => {
 const authentication = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throwError(400, errors.array()[0].msg, errors.array(), true);
+    throwError(400, errors.array()[0].msg, errors.array(), false);
   }
 
   try {
