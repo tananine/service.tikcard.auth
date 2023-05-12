@@ -20,7 +20,37 @@ const getData = async (req, res, next) => {
       attributes: { exclude: ['id', 'accountId'] },
     });
 
-    res.status(200).json({ email: account.email, tutorial: tutorial });
+    return res.status(200).json({ email: account.email, tutorial: tutorial });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const successTutorial = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throwError(400, errors.array()[0].msg, errors.array(), false);
+    }
+    const account = await auth(req.headers.authorization);
+    const accountId = account.id;
+
+    db.Tutorial.update(
+      { profilePage: true },
+      { where: { accountId: accountId } }
+    ).then((update) => {
+      if (!update) {
+        throwError(
+          400,
+          'อัพเดทไม่สำเร็จ',
+          {
+            accountId: accountId,
+          },
+          false
+        );
+      }
+      return res.status(200).json({ message: 'อัพเดทสำเร็จ' });
+    });
   } catch (error) {
     next(error);
   }
@@ -28,4 +58,5 @@ const getData = async (req, res, next) => {
 
 module.exports = {
   getData,
+  successTutorial,
 };

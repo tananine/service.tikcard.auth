@@ -12,5 +12,12 @@ router.get(
     .withMessage('ไม่มี Authorization ใน Header'),
   accountControllers.getData
 );
+router.put(
+  '/success-tutorial',
+  header('Authorization')
+    .notEmpty()
+    .withMessage('ไม่มี Authorization ใน Header'),
+  accountControllers.successTutorial
+);
 
 module.exports = router;
