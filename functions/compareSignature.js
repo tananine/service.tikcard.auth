@@ -1,3 +1,4 @@
+const { throwError } = require('./throwError');
 const db = require('../models/index');
 const { verifyExpires } = require('./verifyExpires');
 const { client } = require('../functions/createRedis');
