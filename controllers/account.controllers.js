@@ -34,9 +34,10 @@ const successTutorial = async (req, res, next) => {
     }
     const account = await auth(req.headers.authorization);
     const accountId = account.id;
+    const tutorial = req.body.tutorial;
 
     db.Tutorial.update(
-      { profilePage: true },
+      { [tutorial]: true },
       { where: { accountId: accountId } }
     ).then((update) => {
       if (!update) {
