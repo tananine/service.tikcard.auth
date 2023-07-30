@@ -12,15 +12,15 @@ exports.auth = (bearerTokenHeader) => {
   const signature = decodeToken[2];
 
   if (!(tokenId && expires && signature)) {
-    throwError(401, 'รูปแบบ Token ไม่ถูกต้อง');
+    throwError(401, 'รูปแบบ Token ไม่ถูกต้อง', {}, false);
   }
   if (!verifyExpires(expires)) {
-    throwError(401, 'Token Client หมดอายุ');
+    throwError(401, 'Token Client หมดอายุ', {}, false);
   }
   return compareSignature(tokenId, signature)
     .then((account) => {
       if (!account) {
-        throwError(401, 'Token ไม่ถูกต้อง');
+        throwError(401, 'Token ไม่ถูกต้อง', {}, false);
       }
       return account;
     })

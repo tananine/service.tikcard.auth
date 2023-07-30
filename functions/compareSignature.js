@@ -8,19 +8,19 @@ exports.compareSignature = async (tokenId, signatureClient) => {
   const value = await client.hGetAll(tokenId);
 
   if (JSON.stringify(value) === JSON.stringify({})) {
-    throwError(404, 'ไม่มี Token ใน Redis');
+    throwError(404, 'ไม่มี Token ใน Redis', {}, false);
   }
 
   const { expires, secretKey, accountId } = value;
 
   if (!verifyExpires(expires)) {
-    throwError(401, 'Token Redis หมดอายุ');
+    throwError(401, 'Token Redis หมดอายุ', {}, false);
   }
 
   let account = null;
 
   if (!accountId) {
-    throwError(404, 'ไม่พบ Account ID ใน Key Redis');
+    throwError(404, 'ไม่พบ Account ID ใน Key Redis', {}, false);
   }
 
   await db.Account.findOne({
@@ -28,7 +28,7 @@ exports.compareSignature = async (tokenId, signatureClient) => {
   })
     .then((accountData) => {
       if (!accountData) {
-        throwError(404, 'ไม่พบ Account ใน Database');
+        throwError(404, 'ไม่พบ Account ใน Database', {}, false);
       }
       const password = accountData.password;
       const signatureRedisData = `${tokenId}:${expires}:${password}:${secretKey}`;

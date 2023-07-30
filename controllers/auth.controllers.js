@@ -6,9 +6,13 @@ const db = require('../models/index');
 const bcrypt = require('bcryptjs');
 
 const register = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throwError(400, errors.array()[0].msg, errors.array(), true);
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throwError(400, errors.array()[0].msg, errors.array(), true);
+    }
+  } catch (error) {
+    return next(error);
   }
 
   const email = req.body.email;
@@ -17,7 +21,7 @@ const register = async (req, res, next) => {
   db.Account.findOne({ where: { email: email } })
     .then((account) => {
       if (account) {
-        throwError(400, 'อีเมลนี้ถูกใช้งานแล้ว');
+        throwError(400, 'อีเมลนี้ถูกใช้งานแล้ว', {}, true);
       }
       return bcrypt.hash(password, 12);
     })
@@ -74,8 +78,12 @@ const login = (req, res, next) => {
 
 const authentication = async (req, res, next) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throwError(400, errors.array()[0].msg, errors.array(), false);
+  try {
+    if (!errors.isEmpty()) {
+      throwError(400, errors.array()[0].msg, errors.array(), false);
+    }
+  } catch (error) {
+    return next(error);
   }
 
   try {
