@@ -8,20 +8,34 @@ const router = express.Router();
 router.post(
   '/register',
   [
-    body('email').isEmail().withMessage('รูปแบบอีเมลไม่ถูกต้อง'),
+    body('email')
+      .trim()
+      .toLowerCase()
+      .isEmail()
+      .withMessage('รูปแบบอีเมลไม่ถูกต้อง')
+      .isLength({ max: 80 })
+      .withMessage('อีเมลต้องไม่เกิน 80 อักขระ'),
     body('password')
-      .isLength({ min: 6 })
-      .withMessage('รหัสผ่านต้องไม่น้อยกว่า 6 อักขระ'),
+      .trim()
+      .isLength({ min: 6, max: 28 })
+      .withMessage('รหัสผ่านต้องมี 6 ถึง 28 อักขระ'),
   ],
   authControllers.register
 );
 router.post(
   '/login',
   [
-    body('email').isEmail().withMessage('รูปแบบอีเมลไม่ถูกต้อง'),
+    body('email')
+      .trim()
+      .toLowerCase()
+      .isEmail()
+      .withMessage('รูปแบบอีเมลไม่ถูกต้อง')
+      .isLength({ max: 80 })
+      .withMessage('อีเมลต้องไม่เกิน 80 อักขระ'),
     body('password')
-      .isLength({ min: 6 })
-      .withMessage('รหัสผ่านต้องไม่น้อยกว่า 6 อักขระ'),
+      .trim()
+      .isLength({ min: 6, max: 28 })
+      .withMessage('รหัสผ่านต้องมี 6 ถึง 28 อักขระ'),
   ],
   authControllers.login
 );
