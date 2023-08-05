@@ -30,6 +30,9 @@ module.exports = {
       profileScan: {
         type: Sequelize.BOOLEAN,
       },
+      profileSecondary: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

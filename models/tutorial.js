@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: false,
       },
+      profileSecondary: {
+        type: DataTypes.INTEGER,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
